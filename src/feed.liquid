@@ -12,22 +12,23 @@
   <link>{{ site.url }}/</link>
   <atom:link href="{{ site.url }}/{{ permalink }}" rel="self" type="application/rss+xml"/>
   <description>{{ site.description }}</description>
-  {%- for post in collections.posts %}
-  {% set absolutePostUrl %}{{ post.url | url | absoluteUrl(site.url) }}{% endset %}
+  {% assign posts_sorted = collections.posts | sort: "date" | reverse %}
+  {% for post in posts_sorted %}
+  {% assign absolutePostUrl = post.url | url %}
   <item>
     <title>{{ post.data.title }}</title>
     <link>{{ absolutePostUrl }}</link>
-    {%- for tag in post.data.tags %}
+    {% for tag in post.data.tags %}
     {% if tag != "posts" %}
     <category>{{ tag }}</category>
     {% endif %}
-    {%- endfor %}
+    {% endfor %}
     <guid isPermaLink="false">{{ post.data.slug }}</guid>
     <pubDate>{{ post.date | dateToRfc822 }}</pubDate>
     <description>{{ post.data.description }}</description>
-    <content:encoded>{{ post.templateContent | htmlToAbsoluteUrls(absolutePostUrl) }}
+    <content:encoded>{{ post.templateContent | escape }}
     </content:encoded>
   </item>
-  {%- endfor %}
+  {% endfor %}
 </channel>
 </rss>

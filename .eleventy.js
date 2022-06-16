@@ -59,9 +59,13 @@ module.exports = function (eleventyConfig) {
     return `<picture><img class="article__cover" src="/assets/img/posts/${filename}" alt="${alt}" /></picture>`;
   });
 
-  eleventyConfig.addLiquidFilter("dateToRfc3339", pluginRss.dateRfc3339);
-
   eleventyConfig.addPlugin(pluginRss);
+
+  eleventyConfig.addLiquidFilter("dateToRfc822", pluginRss.dateToRfc822);
+
+  eleventyConfig.setLiquidOptions({
+    dynamicPartials: false
+  });
 
   return {
     dir: {
