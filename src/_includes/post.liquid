@@ -26,20 +26,21 @@ layout: main
 
       <section class="article__content | flow">
         {{ content }}
-        <aside class="article__improve">
-          <p>Want to improve this article? You can propose an edit <a
-              href="https://github.com/doorgan/blog/blob/master/src{{ page.url | slice: 0, -1 }}.md">here</a>.</p>
-        </aside>
       </section>
 
-      {% include author %}
-
-      <section class="comments gap-top-600">
-        <script src="https://giscus.app/client.js" data-repo="doorgan/blog"
-          data-repo-id="MDEwOlJlcG9zaXRvcnkzNDQwMDYxNjg=" data-category-id="MDE4OkRpc2N1c3Npb25DYXRlZ29yeTMyOTczODM5"
-          data-mapping="og:title" data-theme="preferred_color_scheme" crossorigin="anonymous" async>
-          </script>
-      </section>
+      <aside>
+	  {% include author %}
+        <div class="article-tags | gap-top-200">
+          {% for tag in tags %}
+          {% if tag != "posts" %}
+          <a href="/tags/{{ tag }}" class="tag">{{ tag }}</a>
+          {% endif %}
+          {% endfor %}
+        </div>
+      </aside>
     </div>
   </article>
+  <section class="comments gap-top-600">
+      Have something to say? <a href="https://roastidio.us/roast" referrerpolicy="no-referrer-when-downgrade">Roast me at Roastidio.us!</a>
+  </sectiom>
 </div>

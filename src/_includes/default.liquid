@@ -3,7 +3,7 @@ layout: main
 ---
 
 <div class="wrapper">
-  <h1>{{ title }}</h1>
+  <h1>{{ title | default: site.title }}</h1>
 </div>
   
 {% include nav %}

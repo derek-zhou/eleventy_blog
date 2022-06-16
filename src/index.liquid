@@ -1,6 +1,5 @@
 ---
 layout: default
-title: Dorgan's blog
 pagination:
   data: collections.posts
   size: 10
@@ -20,10 +19,10 @@ pagination:
     <a href="/tags/{{ tag }}" class="tag">{{ tag }}</a>
     {% endif %} {% endfor %}
 
-    <p>{{ post.data.post_excerpt }}</p>
+    <p>{{ post.data.description }}</p>
 
     <div>
-      <a href="{{ post.url }}">Read this post →</a>
+      <a href="{{ post.url }}">Read more →</a>
     </div>
   </article>
   {% endif %}
