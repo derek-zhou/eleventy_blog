@@ -1,3 +1,3 @@
 My personal blog.
 
-Live version [here](https://dorgan.netlify.app/).
+Live version [here](https://blog.roastidio.us/).

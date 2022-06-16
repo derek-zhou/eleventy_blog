@@ -1,6 +1,6 @@
 ---json
 {
-  "permalink": "feed.xml",
+  "permalink": "/feed.xml",
   "eleventyExcludeFromCollections": true
 }
 ---
@@ -10,11 +10,11 @@
 <channel>
   <title>{{ site.title }}</title>
   <link>{{ site.url }}/</link>
-  <atom:link href="{{ site.url }}/{{ permalink }}" rel="self" type="application/rss+xml"/>
+  <atom:link href="{{ site.url }}{{ permalink }}" rel="self" type="application/rss+xml"/>
   <description>{{ site.description }}</description>
   {% assign posts_sorted = collections.posts | sort: "date" | reverse %}
   {% for post in posts_sorted %}
-  {% assign absolutePostUrl = post.url | url %}
+  {% assign absolutePostUrl = post.url | prepend: site.url %}
   <item>
     <title>{{ post.data.title }}</title>
     <link>{{ absolutePostUrl }}</link>
