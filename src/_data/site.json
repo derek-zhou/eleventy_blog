@@ -2,5 +2,6 @@
     "name": "Roastidio.us Blog",
     "url": "https://blog.roastidio.us",
     "title": "Roastidio.us Blog",
-    "description": "A blog dedicated to the ideas behind Roastidio.us"
+    "description": "A blog dedicated to the ideas behind Roastidio.us",
+    "image": "/assets/img/paper.jpg"
 }
