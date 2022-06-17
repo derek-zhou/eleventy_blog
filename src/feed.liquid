@@ -25,6 +25,11 @@
     {% endfor %}
     <guid isPermaLink="false">{{ post.data.slug }}</guid>
     <pubDate>{{ post.date | dateToRfc822 }}</pubDate>
+    {% if image %}
+    <enclosure type="image/jpeg" length="0" url="{{ image }}" />
+    {% else %}
+    <enclosure type="image/jpeg" length="0" url="{{ site.url }}{{ site.image }}" />
+    {% endif %}
     <description>{{ post.data.description }}</description>
     <content:encoded>{{ post.templateContent | escape }}
     </content:encoded>
