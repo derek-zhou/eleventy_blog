@@ -44,6 +44,17 @@ pre:not([class*="language-"]) > code {
   border-radius: 0.3em;
 }
 
+.comments {
+    font-size: 1.25rem;
+}
+
+textarea {
+    width: 100%;
+    height: 6rem;
+    color: var(--color-text-primary);
+    margin-bottom: 0.5rem;
+}
+
 // Utilities
 @import "utilities/flow";
 @import "utilities/gaps";
