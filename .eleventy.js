@@ -42,10 +42,8 @@ module.exports = function (eleventyConfig) {
 
   const md = markdownIt({ linkify: true, html: true });
   md.use(markdownItAnchor, {
-    level: [1, 2, 3],
-    permalink: true,
-    permalinkBefore: false,
-    permalinkSymbol: "#",
+      level: [1, 2, 3],
+      permalink: markdownItAnchor.permalink.headerLink()
   });
 
   eleventyConfig.setLibrary("md", md);
