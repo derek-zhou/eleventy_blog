@@ -44,3 +44,7 @@ I tried a second approach, then a third one, each funkier than the last one. Eve
 I took on a journey I did not expect, I learned many things along the way, I achieved (largely) what I set out to do. Why the taste in my mouth at the end is still sour?
 
 I don't believe the web is really dead now. However, it is indeed a crueler place than 10 or 20 years ago. To survive in the cruel web, good, honest people like me have to dabble in some dark art to protect ourselves. I hope my dose of dark art is the smallest possible, so anyone reading this blog post can avoid the bigger ones.
+
+## Updates: (2026)
+
+I went back to plain links between pages. Let the bots crawl; my server is strong enough to hold up. The hacks described are still hacks after all.
