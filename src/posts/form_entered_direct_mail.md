@@ -8,7 +8,7 @@ tags:
 description: An email like application that lets users to send messages directly on the web 
 ---
 
-I love emails, I really do. However, now I feel email is a lost cause. [SPAM black listing is out of control](/posts/spam_blacklists_are_out_of_control/), [Sending one's email is increasing hard](https://blog.roastidio.us/posts/send_my_own_email/). I need to have a contingency plan, the online community need a contingency plan. Of coursre there are secure chat applications, the fediverse, but they all come with their own problems, high complexity if nothing else. Here I describe something much simpler, something can be implement by any compentent web application developer on any stack. 
+I love emails, I really do. However, now I feel email is a lost cause: [SPAM black listing is out of control](/posts/spam_blacklists_are_out_of_control/), [Sending one's email is increasing hard](https://blog.roastidio.us/posts/send_my_own_email/). I need to have a contingency plan, the online community need a contingency plan. Of course there are secure chat applications, the fediverse, etc. but they all come with their own problems, high complexity if nothing else. Here I describe something much simpler, something can be implemented by any compentent web application developer on any stack. 
 
 ## What do I need (or don't need) from emails
 
@@ -18,7 +18,7 @@ I need emails to communicate with my fellow human beings, not bots. I am willing
 * attachments (I can send a link)
 * sending to a group (for which I can use a web forum)
 
-One does not need any intermediatry (MTAs, MDAs) to achieve an one-on-one, text-based communication. If anyone wishing to receive mails can host a web application with a simple form for sender to write them the message, then there is nothing else needed. No one can intercept your messages (protected by SSL), and it put you the receiver in control for who can or can't send you messages. 
+One does not need any intermediatry (MTAs, MDAs) to achieve an one-on-one, text-based communication. Anyone wishing to receive mails can host a web application with a simple form for senders to write them the message; there is nothing else needed. No one can intercept your messages (protected by SSL), and it puts you the receiver in control for who can or can't send you messages. 
 
 The following describe such a system: Form Entered Direct Mail, or FedMail. 
 
@@ -26,8 +26,8 @@ The following describe such a system: Form Entered Direct Mail, or FedMail.
 
 There are 2 classes of users in this system:
 
-* The ones who host their own FedMail instances (First class)
-* The ones who do not host their own FedMail instances (Second class)
+* The ones who host their own FedMail instances (First class users)
+* The ones who do not host their own FedMail instances (Second class users)
 
 Communcation can only happen between 2 first class users or between one first class user and one second class user. 2 second class users cannot message each other. 
 
@@ -37,59 +37,60 @@ Each first class user can publish an URL as thier FedMail address. This URL shal
 
 The sender finds out the recipient's address is https://user1.example.com and visit there. If the user has an esteblished cookie session then they can skip the user registration. If not, they are directed to a registration page which can be as simple as none at all. All personal information can be optional; including the name or the FedMail address.
 
-If the user has a cookie session, the url https://user1.example.com shall present the user with past conversations between the user and the owner of the domain. Any messages retention policy can be implemented; some retention is expected.
+If the user has a cookie session, the url https://user1.example.com shall present the user with past conversations between this user and the owner of the instance. Any messages retention policy can be implemented.
 
-On the same page, there should be a "compose" button/link that lead the user to a page with a form to compose a message to the owner of this instance. There should be a Subject field and the textarea for the Body of the message. The application should allow a subset of Markdown syntax so the writer can format their message nicely. 
+On the same page, there should be a "compose" button/link that lead the user to a page with a form to compose a message to the owner of this instance. There should be a Subject field and a textarea for the Body of the message. The application should allow a subset of Markdown syntax so the writer can format their message nicely. 
 
-Once the writer clicks the "send" button, the message is submitted and to be presented to the owner of the domain. The owner can read and decide wheteher to reply. If the sender did not provide a return FedMail address in their configuration, the conversaion is captured no where else: The only way to check and read replies is by visiting back here. For the owner, they should see *all* converatiaons, and for the visitor, they should only see their own conversations, with identity as defined by the cookie session.
+Once the writer clicks the "send" button, the message is submitted and to be presented to the owner of the domain. The owner can read and decide wheteher to reply. The conversaion is captured here no where else: The only way to check and read replies is by visiting back here. For the owner, they should see *all* converatiaons, and for the visitor, they should only see their own conversations, with identity as defined by their cookie session.
 
 ## A first class user writing to another first class user
 
 Things are more interesting for communications between 2 first class users. Let's say the owner of https://user2.example.com wish to write to the owner of https://user1.example.com 
 
-The preparation step is the same, user2 should esteblish cookie session with https://user1.example.com . Cookie session should last some time so this step is infrequently needed. If the cookie session was not present or expired, a later step will fail so they can register and try again. Since user2 has an instance of their own, user2 should configure the FedMail address in the user registration/configuration page on https://user1.example.com to include the return FedMail address. 
+The preparation step is the same, user2 should esteblish cookie session with https://user1.example.com . Cookie session should last some time so this step is infrequently needed. If the cookie session is not present or expired, a later step will fail, so they can register and try again. User2 should configure the FedMail address in the user registration/configuration page on https://user1.example.com to include the return FedMail address. 
 
-To write to user1, the user2 visits *their own* FedMail instance: https://user2.example.com and click the "compose" button. Writing to an external party should be a priviledge reserved to the owner the instance. After done with composing and upon clicking the "send" button, the following should happen:
+To write to user1, the user2 visits *their own* FedMail instance: https://user2.example.com and click the "reply" or "compose" button. Writing to an external party should be a priviledge reserved to the owner the instance. After done with composing and upon clicking the "send" button, the following should happen in order:
 
-1. A copy is saved locally on https://user2.example.com, to esteblish the conversation context
-1. a background post with the message to https://user1.example.com using "multipart/form-data"
-1. Upon receiving a post, https://user1.example.com shall save the incoming message in a a special qurantine space, and generate an opaque, unguessable handle (could be just a random string) with a short life-span, embedded in an url as part of a HTTP 302 reply
+1. A copy is saved locally on https://user2.example.com, to maintain the conversation context
+1. a background HTTP POST with the message to https://user1.example.com using "multipart/form-data"
+1. Upon receiving the POST, https://user1.example.com shall save the incoming message in a a qurantine space, and generate an opaque, unguessable handle (could be just a random string) with a short life-span, embedded in an url as part of a HTTP 302 reply
 1. Uppon receiving the reply with the url, https://user2.example.com will redirect the user to the given url
-1. Now that the user is redirected to a page on https://user1.example.com with cookie session, https://user1.example.com can fill in the "from" address from user configuration. The message will be delivered with the press of a button.
+1. Now that the user is redirected to a page on https://user1.example.com with cookie session, https://user1.example.com can fill in the return address from user configuration. The message will be delivered with the press of a button.
 
-The above scheme is based on the [Post, Redirect, and Post again](/posts/pass_data_between_websites/) described earlier in this blog.
+The conversation is captured at both the FedMail instances.
 
-## Threading
+## Metadata and Threading
 
-Threading should be preserved in [the same way as in Email](https://cr.yp.to/immhf/thread.html) to help provide the correct context. Because the communcation is always one-on-one and the full conversation is preservered on both FedMail instances, only the Message-ID and the In-Reply-To field should be generated and sent; the References field is optional.
+Threading should be preserved in [the same way as in Email](https://cr.yp.to/immhf/thread.html) to help provide the correct context. Because the communcation is always one-on-one and the full conversation is preservered on both FedMail instances, only the Message-ID and the In-Reply-To fields should be generated and sent; the References field is optional.
 
 Hard seperation of email threads by the other party's session cookie should be maintained. This is to mitigate the risk of Message-ID forgry and spoofed messages. The associated downside is that one cannot reply to the same email thread from 2 different broswers/devices.
 
 The following fields are defined for each message:
 
-* Subject (madatory, from user input on the sending instance for cold messages only, replies cannot change Subject)
-* Body (mandatory, from user input on the sending instance, subset of Markdown syntax. Trimming and bottom posting is preferred but not mandatory for replies)
-* Message-ID (auto-generated in the sending instance)
-* In-Reply-To (filled in the sending instance for replies only)
-* From (filled in by the receiving instance from the user configration. message from same instance should not have the From field)
+* Subject (mandatory, from user input on the sending instance)
+* Body (mandatory, from user input on the sending instance, subset of Markdown syntax)
+* Message-ID (auto-generated by the sending instance)
+* In-Reply-To (filled in by the sending instance for replies only)
+* From (filled in by the receiving instance using the session cookie, it is an user identity only meaningful in the local FedMail instance)
+* Reply-To (The FedMail address to where replies should be sent. Filled in by the receiving instance from the user configration)
 
 ## Security analysis
 
-The FedMail system does not even pretend to verify identity. Messages can be forged, just like email. However, human are pretty good at telling forgry from authentic messages by reading the conversation context, which is binned by the cookie session of the sender. If a bad actor pretends to be someone else and send you a message, you will see no context on your server. Although everything can be forged on a bad actor's server, the user should know what they have written before, so a forged converation cannot hold up to scrunity.
+The FedMail system does attempt verify identity. Messages can be forged, just like email. However, human are pretty good at telling forgry from authentic messages by reading the conversation context, which is associated with the cookie session of the sender. If a bad actor pretends to be someone else and send you a message, you will see no context on your instance. Although everything can be forged on a bad actor's instance, the user should know what they have written before, so a forged converation cannot hold up to the scrunity.
 
-SPAM cannot be fully eliminated but they can be limited by mitigations. The owner of any FedMail instance can employ all kinds of standard web methods:
+SPAM cannot be eliminated but can be mitigated. The owner of any FedMail instance can employ all kinds of standard web methods:
 
 * rating limiting incoming posts
 * rate liming per cookie session for message submission
 * require cool down period for newly created cookie session to send a message
 * or even more obnoxous measures, like CAPTCHAs
 
-The spec is intentionally vague to be human (implementors, operators and users) friendly and bot unfriendly. The extensive use of cookie session also works this way:
+This spec is intentionally vague to be human (implementors, operators and users) friendly and bot unfriendly. The extensive use of cookie sessions also works this way:
 
-* A bad actor needs to keep track of cookie session per recipient to send anonymous message
+* A bad actor needs to keep track of cookie session per recipient to send anonymous messages
 * A bad actor needs to maintain a FedMail instance to have an identity
-* A bot needs to fake unspecified user interaction which can be diffetent from one implementation to the next
+* A bot needs to fake unspecified user interactions to really delver any messages, which can be diffetent from one implementation to the next
 
-The author acknowledged that any system can be abused; however, the hope is that the cost-to-benefit ratio will make abuse less economically viable on the FebMail than on Email, due to the bot unfriendliness.
+The author acknowledged that any system can be abused; however, the hope is that the cost-to-benefit ratio will make abuse less economically viable on the FebMail than on Email.
  
 
